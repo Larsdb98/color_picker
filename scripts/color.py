@@ -238,6 +238,8 @@ class ColorCapture():
         imgmsg = self.bridge.cv2_to_imgmsg(self.circle_img)
         imgmsg.encoding = "bgr8"
 
+        imgmsg.header.stamp = self.img_stamp
+        imgmsg.header.frame_id = self.img_frame_id
         self.circle_pub.publish(imgmsg)
 
 # #} end of balloon_img_callback
@@ -334,6 +336,9 @@ class ColorCapture():
         # msg = self.bridge.cv2_to_imgmsg(res,'rgb8')
         msg = self.bridge.cv2_to_imgmsg(res)
         msg.encoding = "bgr8"
+
+        msg.header.stamp = self.img_stamp
+        msg.header.frame_id = self.img_frame_id
         self.circle_lab.publish(msg)
 
 
