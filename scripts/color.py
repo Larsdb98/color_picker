@@ -103,6 +103,9 @@ class ColorCapture():
         self.circled_lab_name = rospy.get_param('~circled_lab')
         self.object_detect_name = rospy.get_param('~object_detect')
 
+        self.img_stamp = None # Keep track of timestamp for received image msgs & published ones.
+        self.img_frame_id = None # Same as above for the frame_id in the header
+
         ## | --------------------- get HSV params --------------------- |
 
         self.obd_h_c = rospy.get_param("~hue_center")
@@ -145,12 +148,12 @@ class ColorCapture():
         self.img_count = 0
 
         ## hsv
-        self.h_mean = 0
-        self.h_sigma = 0
-        self.s_mean = 0
-        self.s_sigma = 0
-        self.v_mean = 10
-        self.v_sigma = 10
+        self.h_mean = 16.409146795611438 # original: 0
+        self.h_sigma = 63.50656069409612 # original: 0
+        self.s_mean = 27.327063740856843 # original: 0
+        self.s_sigma = 56.440161914509474 # original: 0
+        self.v_mean = 140.20062695924764 # original: 10
+        self.v_sigma = 89.84099795092772 # original: 10
 
         self.h_arr = []
         self.s_arr = []
@@ -186,8 +189,7 @@ class ColorCapture():
         self.hist_ab = None
         self.freeze = False
         self.color_space = 'HSV'
-        self.sub = RAW
-
+        self.sub = HSV # Original: HSV
 
 
 
@@ -198,6 +200,8 @@ class ColorCapture():
     def balloon_call(self,data):
 
         img = self.bridge.imgmsg_to_cv2(data, "bgr8")
+        self.img_stamp = data.header.stamp 
+        self.img_frame_id = data.header.frame_id
         # img = img.copy()
         if self.services_ready == False:
 
@@ -233,7 +237,6 @@ class ColorCapture():
             return
         imgmsg = self.bridge.cv2_to_imgmsg(self.circle_img)
         imgmsg.encoding = "bgr8"
-
 
         self.circle_pub.publish(imgmsg)
 
@@ -297,6 +300,9 @@ class ColorCapture():
         # msg = self.bridge.cv2_to_imgmsg(res,'rgb8')
         msg = self.bridge.cv2_to_imgmsg(res)
         msg.encoding = "bgr8"
+
+        msg.header.stamp = self.img_stamp
+        msg.header.frame_id = self.img_frame_id
         self.circle_hsv.publish(msg)
 
 
