@@ -148,12 +148,20 @@ class ColorCapture():
         self.img_count = 0
 
         ## hsv
-        self.h_mean = 16.409146795611438 # original: 0
-        self.h_sigma = 63.50656069409612 # original: 0
-        self.s_mean = 27.327063740856843 # original: 0
-        self.s_sigma = 56.440161914509474 # original: 0
-        self.v_mean = 140.20062695924764 # original: 10
-        self.v_sigma = 89.84099795092772 # original: 10
+        self.h_mean = 13.140619401450358 # original: 0
+        self.h_sigma = 11.202623068669967 # original: 0
+        self.s_mean = 28.55108359133127 # original: 0
+        self.s_sigma = 12.855219888916459 # original: 0
+        self.v_mean = 140.5108359133127 # original: 10
+        self.v_sigma = 13.164206098791741 # original: 10
+
+        rospy.logdebug("STARTING HSV VALUES:")
+        rospy.logdebug("self.h_mean : {}".format(self.h_mean))        
+        rospy.logdebug("self.h_sigma: {}".format(self.h_sigma))        
+        rospy.logdebug("self.s_mean : {}".format(self.s_mean))
+        rospy.logdebug("self.s_sigma: {}".format(self.s_sigma))
+        rospy.logdebug("self.v_mean : {}".format(self.v_mean))
+        rospy.logdebug("self.v_sigma: {}".format(self.v_sigma))
 
         self.h_arr = []
         self.s_arr = []
@@ -168,12 +176,12 @@ class ColorCapture():
         self.hist_hs = None
 
         ## lab
-        self.l_mean = 10
-        self.l_sigma = 10
-        self.a_mean = 0
-        self.a_sigma = 0
-        self.b_mean = 0
-        self.b_sigma = 0
+        self.l_mean = 128.93521421107627 # original: 10
+        self.l_sigma = 16.335798273872076 # original: 10
+        self.a_mean = 133.18077324973876 # original: 0
+        self.a_sigma = 17.72488418977357 # original: 0
+        self.b_mean = 143.16405433646813 # original: 0
+        self.b_sigma = 1093.1342484161357 # original: 0
 
         self.l_arr = []
         self.u_arr = []
@@ -291,6 +299,13 @@ class ColorCapture():
 
         else:
             mask = cv2.inRange(hsv, lower, upper)
+
+        # rospy.loginfo("self.h_mean : {}".format(self.h_mean))        
+        # rospy.loginfo("self.h_sigma: {}".format(self.h_sigma))        
+        # rospy.loginfo("self.s_mean : {}".format(self.s_mean))
+        # rospy.loginfo("self.s_sigma: {}".format(self.s_sigma))
+        # rospy.loginfo("self.v_mean : {}".format(self.v_mean))
+        # rospy.loginfo("self.v_sigma: {}".format(self.v_sigma))
 
         self.lower_hsv = lower
         self.upper_hsv = upper
